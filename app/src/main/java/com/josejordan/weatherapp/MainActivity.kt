@@ -35,20 +35,29 @@ class MainActivity : AppCompatActivity() {
             val city = cityEditText.text.toString()
             val country = countryEditText.text.toString()
 
-            viewModel.getWeather(city, country).observe(this) { weather ->
-                weatherInfoTextView.text = weather
+            viewModel.getWeather(city, country).observe(this) { weatherResponse ->
+                val stringBuilder = "City: " +
+                        weatherResponse.name +
+                        "\nCountry: " +
+                        weatherResponse.sys.country +
+                        "\nDescription: " +
+                        weatherResponse.weather[0].description +
+                        "\nTemperature: " +
+                        String.format("%.2f", weatherResponse.main.temp) + "°C"
+
+                weatherInfoTextView.text = stringBuilder
             }
         }
     }
-}
 
-class ViewModelFactory(private val repository: WeatherRepository) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(WeatherViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return WeatherViewModel(repository) as T
+    class ViewModelFactory(private val repository: WeatherRepository) : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(WeatherViewModel::class.java)) {
+                @Suppress("UNCHECKED_CAST")
+                return WeatherViewModel(repository) as T
+            }
+            throw IllegalArgumentException("Unknown ViewModel class")
         }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
 

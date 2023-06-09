@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 
 class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() {
 
-    fun getWeather(city: String, country: String): LiveData<String> {
+    fun getWeather(city: String, country: String): LiveData<WeatherResponse> {
         return repository.getWeather(city, country)
     }
 }

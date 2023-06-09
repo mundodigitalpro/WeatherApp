@@ -6,7 +6,8 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,7 +17,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var searchButton: Button
 
     // Get a reference to the ViewModel
-    private val viewModel: WeatherViewModel by viewModels()
+    private val viewModel: WeatherViewModel by viewModels {
+        // Pass the repository to the ViewModel
+        ViewModelFactory(WeatherRepositoryImpl())
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,19 +31,27 @@ class MainActivity : AppCompatActivity() {
         countryEditText = findViewById(R.id.countryEditText)
         searchButton = findViewById(R.id.searchButton)
 
-        // Observe the weather LiveData
-        viewModel.weather.observe(this) { weather ->
-            weatherInfoTextView.text = weather
-        }
-
         searchButton.setOnClickListener {
             val city = cityEditText.text.toString()
             val country = countryEditText.text.toString()
 
-            viewModel.fetchWeather(city, country)
+            viewModel.getWeather(city, country).observe(this) { weather ->
+                weatherInfoTextView.text = weather
+            }
         }
     }
 }
+
+class ViewModelFactory(private val repository: WeatherRepository) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(WeatherViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return WeatherViewModel(repository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
+
 
 
 

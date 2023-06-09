@@ -1,67 +1,45 @@
 package com.josejordan.weatherapp
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var weatherInfoTextView: TextView
+    private lateinit var cityEditText: EditText
+    private lateinit var countryEditText: EditText
+    private lateinit var searchButton: Button
+
+    // Get a reference to the ViewModel
+    private val viewModel: WeatherViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         weatherInfoTextView = findViewById(R.id.weatherInfoTextView)
+        cityEditText = findViewById(R.id.cityEditText)
+        countryEditText = findViewById(R.id.countryEditText)
+        searchButton = findViewById(R.id.searchButton)
 
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://api.openweathermap.org/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+        // Observe the weather LiveData
+        viewModel.weather.observe(this) { weather ->
+            weatherInfoTextView.text = weather
+        }
 
-        val service = retrofit.create(WeatherService::class.java)
-        val call = service.getCurrentWeatherData(
-            lat = "35",
-            lon = "139",
-            units = "metric",
-            app_id = "your_api_key"
-        )
+        searchButton.setOnClickListener {
+            val city = cityEditText.text.toString()
+            val country = countryEditText.text.toString()
 
-
-        call.enqueue(object : Callback<WeatherResponse> {
-            override fun onResponse(
-                call: Call<WeatherResponse>,
-                response: Response<WeatherResponse>
-            ) {
-                if (response.code() == 200) {
-                    val weatherResponse = response.body()!!
-
-                    Log.d("MainActivity", "Response: $weatherResponse")
-
-                    val stringBuilder = "City: " +
-                            weatherResponse.name +
-                            "\nCountry: " +
-                            weatherResponse.sys.country +
-                            "\nDescription: " +
-                            weatherResponse.weather[0].description +
-                            "\nTemperature: " +
-                            String.format("%.2f", weatherResponse.main.temp) + "°C"
-
-                    weatherInfoTextView.text = stringBuilder
-                }
-            }
-
-
-            override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
-                Log.d("MainActivity", "Error: ${t.message}")
-            }
-        })
+            viewModel.fetchWeather(city, country)
+        }
     }
 }
+
+
+

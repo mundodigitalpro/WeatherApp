@@ -6,9 +6,9 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var weatherInfoTextView: TextView
@@ -17,10 +17,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var searchButton: Button
 
     // Get a reference to the ViewModel
-    private val viewModel: WeatherViewModel by viewModels {
+    private val viewModel: WeatherViewModel by viewModels()
         // Pass the repository to the ViewModel
-        ViewModelFactory(WeatherRepositoryImpl())
-    }
+        //ViewModelFactory(WeatherRepositoryImpl())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    class ViewModelFactory(private val repository: WeatherRepository) : ViewModelProvider.Factory {
+    /*class ViewModelFactory(private val repository: WeatherRepository) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(WeatherViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
@@ -58,7 +57,7 @@ class MainActivity : AppCompatActivity() {
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }
-    }
+    }*/
 }
 
 

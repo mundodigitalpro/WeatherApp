@@ -10,6 +10,16 @@ class WeatherRepositoryImpl @Inject constructor(
 ): WeatherRepository {
 
     override suspend fun getWeather(city: String, country: String): WeatherResponse {
-            return service.getWeatherByCityAndCountry(location = "$city,$country",units = "metric", app_id = "854adb87b1ddd246adf542c47f3eeca0")
+        val response = service.getWeatherByCityAndCountry(
+            location = "$city,$country",
+            units = "metric",
+            app_id = "854adb87b1ddd246adf542c47f3eeca0"
+        )
+
+        if (response.isSuccessful) {
+            return response.body()!!
+        } else {
+            throw Exception("Error fetching weather data")
+        }
     }
 }

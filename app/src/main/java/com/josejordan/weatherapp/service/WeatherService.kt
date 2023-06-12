@@ -1,9 +1,9 @@
 package com.josejordan.weatherapp.service
 
 import com.josejordan.weatherapp.data.WeatherResponse
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
-
 
 interface WeatherService {
 
@@ -12,6 +12,7 @@ interface WeatherService {
         @Query("q") location: String,
         @Query("units") units: String,
         @Query("appid") app_id: String
-    ): WeatherResponse
+    ): Response<WeatherResponse>
 }
+
 

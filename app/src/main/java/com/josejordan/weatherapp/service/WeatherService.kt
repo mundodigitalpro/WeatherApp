@@ -1,5 +1,6 @@
-package com.josejordan.weatherapp
+package com.josejordan.weatherapp.service
 
+import com.josejordan.weatherapp.data.WeatherResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

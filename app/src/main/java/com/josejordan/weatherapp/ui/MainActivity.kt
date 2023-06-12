@@ -1,4 +1,4 @@
-package com.josejordan.weatherapp
+package com.josejordan.weatherapp.ui
 
 import android.os.Bundle
 import android.widget.Button
@@ -6,7 +6,10 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.josejordan.weatherapp.R
+import com.josejordan.weatherapp.viewmodel.WeatherViewModel
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -16,10 +19,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var countryEditText: EditText
     private lateinit var searchButton: Button
 
-    // Get a reference to the ViewModel
     private val viewModel: WeatherViewModel by viewModels()
-        // Pass the repository to the ViewModel
-        //ViewModelFactory(WeatherRepositoryImpl())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,16 +48,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-    /*class ViewModelFactory(private val repository: WeatherRepository) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(WeatherViewModel::class.java)) {
-                @Suppress("UNCHECKED_CAST")
-                return WeatherViewModel(repository) as T
-            }
-            throw IllegalArgumentException("Unknown ViewModel class")
-        }
-    }*/
 }
 
 

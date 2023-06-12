@@ -1,5 +1,8 @@
-package com.josejordan.weatherapp
+package com.josejordan.weatherapp.di
 
+import com.josejordan.weatherapp.repository.WeatherRepository
+import com.josejordan.weatherapp.repository.WeatherRepositoryImpl
+import com.josejordan.weatherapp.service.WeatherService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

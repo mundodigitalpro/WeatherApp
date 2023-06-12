@@ -1,7 +1,9 @@
-package com.josejordan.weatherapp
+package com.josejordan.weatherapp.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import com.josejordan.weatherapp.data.WeatherResponse
+import com.josejordan.weatherapp.repository.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

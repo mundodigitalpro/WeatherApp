@@ -1,7 +1,9 @@
-package com.josejordan.weatherapp
+package com.josejordan.weatherapp.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.josejordan.weatherapp.data.WeatherResponse
+import com.josejordan.weatherapp.service.WeatherService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -12,14 +14,6 @@ class WeatherRepositoryImpl @Inject constructor(
 ): WeatherRepository {
 
     private val _weather = MutableLiveData<WeatherResponse>()
-
-/*    private val retrofit = Retrofit.Builder()
-        .baseUrl("https://api.openweathermap.org/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()*/
-
-    //private val service = retrofit.create(WeatherService::class.java)
-
     override fun getWeather(city: String, country: String): LiveData<WeatherResponse> {
 
         val call = service.getWeatherByCityAndCountry(

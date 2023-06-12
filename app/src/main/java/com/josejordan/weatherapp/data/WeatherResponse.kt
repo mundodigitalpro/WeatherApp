@@ -1,4 +1,5 @@
-package com.josejordan.weatherapp
+package com.josejordan.weatherapp.data
+
 
 data class WeatherResponse(
     val coord: Coord,
